@@ -1,1 +1,36 @@
+APIs - Application Programmable Interfaces- Set of rules that determine how two software systems can communicate with each other and share information.
+Workflow: Client sends a request to an API which fetches the corresponding relevant data from API Server and delivers it to the client as a response 
+(Eg- Customer- waiter- API server)
+
+API Request- Endpoint (URL the provides access to a specific resource)
+             Method (Type of operations that the client would like to perform on the given resource)
+             Parameters (Variables with specific instructions for the request)
+             Request headers (Additional details regarding the request)
+             Request body (Actual Data) 
+
+API Response- Consist of status code, response headers and response body. 
+
+Types- (Categorized by their architectural style)
+REST
+SOAP
+GraphQL
+Webhooks
+gRPC 
+
+How API parameters work-URL and Endpoints-
+
+Query paramters-(?key=value)  ---> used for filtering 
+Eg- GET /products?category=shoes&limit=10
+
+Path parameters-(/resource/:id) ----> used for identity
+Eg- GET /USERS/123 
+
+Header Parameters- Carry metadata that shapes how requests are processed and how the responses are interpreted.
+Eg: This is a handler: app.post('/orders', (req, res) => { const contentType = req.get('Content-Type'); // e.g., application/json const accept = req.get('Accept'); // e.g., application/json const auth = req.get('Authorization'); // e.g., Bearer <token> const ua = req.get('User-Agent'); // validate headers, then handle request... res.set('Content-Type', 'application/json'); // declare response type return res.json({ ok: true, contentType, accept, ua, hasAuth: Boolean(auth) }); });
+
+Content Negotiation: Negotiation regarding the compatible content type; when a client wants a resource , thr client requests it via a URL. The server uses this URL to choose one of the variants of the responses. 
+There are several types of negotiations-
+              Server-driven content negotiation- server uses internal algo to choose what resposne to send.(not scalable as there is one header per feature)
+              Agent-driven negotiation- Server sends back a page that has multiple links to alternate resouces  when faced with an ambiguous request 
+              
 
