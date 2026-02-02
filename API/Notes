@@ -1,36 +1,200 @@
-APIs - Application Programmable Interfaces- Set of rules that determine how two software systems can communicate with each other and share information.
-Workflow: Client sends a request to an API which fetches the corresponding relevant data from API Server and delivers it to the client as a response 
-(Eg- Customer- waiter- API server)
+# APIs & HTTP Fundamentals
 
-API Request- Endpoint (URL the provides access to a specific resource)
-             Method (Type of operations that the client would like to perform on the given resource)
-             Parameters (Variables with specific instructions for the request)
-             Request headers (Additional details regarding the request)
-             Request body (Actual Data) 
+## APIs (Application Programming Interfaces)
 
-API Response- Consist of status code, response headers and response body. 
+**Definition:** A set of rules that determine how two software systems communicate and share information.
 
-Types- (Categorized by their architectural style)
-REST
-SOAP
-GraphQL
-Webhooks
-gRPC 
+**Mental model:** Customer (client) → Waiter (API) → Kitchen (API server).
 
-How API parameters work-URL and Endpoints-
+---
 
-Query paramters-(?key=value)  ---> used for filtering 
-Eg- GET /products?category=shoes&limit=10
+## API Workflow
 
-Path parameters-(/resource/:id) ----> used for identity
-Eg- GET /USERS/123 
+1. Client sends a request to an API
+2. API server processes the request
+3. API server returns relevant data as a response
 
-Header Parameters- Carry metadata that shapes how requests are processed and how the responses are interpreted.
-Eg: This is a handler: app.post('/orders', (req, res) => { const contentType = req.get('Content-Type'); // e.g., application/json const accept = req.get('Accept'); // e.g., application/json const auth = req.get('Authorization'); // e.g., Bearer <token> const ua = req.get('User-Agent'); // validate headers, then handle request... res.set('Content-Type', 'application/json'); // declare response type return res.json({ ok: true, contentType, accept, ua, hasAuth: Boolean(auth) }); });
+---
 
-Content Negotiation: Negotiation regarding the compatible content type; when a client wants a resource , thr client requests it via a URL. The server uses this URL to choose one of the variants of the responses. 
-There are several types of negotiations-
-              Server-driven content negotiation- server uses internal algo to choose what resposne to send.(not scalable as there is one header per feature)
-              Agent-driven negotiation- Server sends back a page that has multiple links to alternate resouces  when faced with an ambiguous request 
-              
+## API Request Structure
 
+An API request typically contains:
+
+* **Endpoint**
+
+  * URL that provides access to a specific resource
+
+* **Method**
+
+  * Operation the client wants to perform on the resource
+  * Examples: GET, POST, PUT, DELETE
+
+* **Parameters**
+
+  * Variables that provide instructions or context for the request
+
+* **Request Headers**
+
+  * Metadata about the request (format, auth, client info)
+
+* **Request Body**
+
+  * Actual data sent to the server (usually in POST/PUT)
+
+---
+
+## API Response Structure
+
+An API response consists of:
+
+* **Status Code** (success, client error, server error)
+* **Response Headers** (metadata about the response)
+* **Response Body** (actual returned data)
+
+---
+
+## API Types (by Architectural Style)
+
+* **REST** – Resource-based, stateless, HTTP-driven
+* **SOAP** – XML-based, strict contracts, enterprise-heavy
+* **GraphQL** – Client-defined queries, single endpoint
+* **Webhooks** – Server-to-server event notifications
+* **gRPC** – High-performance, binary protocol over HTTP/2
+
+---
+
+## API Parameters and URLs
+
+### Query Parameters
+
+* Used for filtering, sorting, pagination
+* Format: `?key=value`
+* Example:
+
+  ```
+  GET /products?category=shoes&limit=10
+  ```
+
+### Path Parameters
+
+* Used to identify a specific resource
+* Part of the URL path
+* Example:
+
+  ```
+  GET /users/123
+  ```
+
+### Header Parameters
+
+* Carry metadata that shapes request handling and response interpretation
+* Common headers:
+
+  * Content-Type
+  * Accept
+  * Authorization
+  * User-Agent
+
+Example (Express.js):
+
+```js
+app.post('/orders', (req, res) => {
+  const contentType = req.get('Content-Type');
+  const accept = req.get('Accept');
+  const auth = req.get('Authorization');
+  const ua = req.get('User-Agent');
+
+  res.set('Content-Type', 'application/json');
+  return res.json({ ok: true, contentType, accept, ua, hasAuth: Boolean(auth) });
+});
+```
+
+---
+
+## Content Negotiation
+
+Process where client and server agree on a compatible content type.
+
+Client requests a resource via a URL, and the server selects the appropriate response variant.
+
+### Types of Content Negotiation
+
+* **Server-driven negotiation**
+
+  * Server decides response using internal logic
+  * Not scalable (one header per feature)
+
+* **Agent-driven negotiation**
+
+  * Server returns multiple links to alternative representations
+  * Client chooses the preferred version
+
+---
+
+## HTTP Basics
+
+**HTTP:** A TCP/IP-based application layer protocol that standardizes client–server communication.
+
+---
+
+## TCP Three-Way Handshake
+
+1. **SYN**
+
+   * Client sends a SYN packet with random number `x`
+
+2. **SYN-ACK**
+
+   * Server responds with random number `y` and `x + 1`
+
+3. **ACK**
+
+   * Client sends `y + 1`
+   * Connection established
+
+---
+
+## HTTP Statelessness
+
+* HTTP is **stateless**
+* Server does not store client context between requests
+* Each request must contain all required information
+
+---
+
+## HTTP/2 Concepts
+
+* HTTP messages are split into **frames**
+
+* Frame types include:
+
+  * HEADERS
+  * DATA
+  * SETTINGS
+  * PRIORITY
+  * RST_STREAM
+
+* A **stream** is a collection of frames
+
+* Each frame has a **stream ID**
+
+### Key Features
+
+* Multiplexing (multiple streams over one connection)
+* Request prioritization
+* Server push
+* Improved security
+
+---
+
+## TLS (Transport Layer Security)
+
+### High-Level TLS Flow
+
+1. Client sends supported encryption methods
+2. Server sends certificate signed by a trusted CA
+3. Client verifies the certificate
+4. Client and server agree on symmetric keys
+5. Encrypted communication begins
+
+**Result:** Confidentiality, integrity, and authentication
